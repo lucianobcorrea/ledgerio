@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import FormField from "@/ui/components/formField/FormField";
 import CardForm from "@/ui/components/cardForm/CardForm";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { register } from "@/api/auth/register";
+import axios from "axios";
 
 const formSchema = z
   .object({
@@ -40,6 +44,8 @@ const formSchema = z
   });
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,7 +62,7 @@ export default function Register() {
     let replacedCnpj = cnpj.replace(/\D/g, "");
 
     if (replacedCnpj.length > 14) {
-      replacedCnpj = cnpj.substring(0, cnpj.length - 1);
+      replacedCnpj = cnpj.substring(0, 14);
     }
 
     return replacedCnpj.replace(
@@ -65,8 +71,29 @@ export default function Register() {
     );
   }
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
+  const createUser = useMutation({
+    mutationFn: register,
+  });
+
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    const newData = {
+      ...data,
+      cnpj: data.cnpj.replace(/\D/g, ""),
+    };
+
+    try {
+      const response = await createUser.mutateAsync(newData);
+      toast.success(response.message);
+      form.reset();
+      navigate("/login");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.message || "Unexpected error";
+        toast.error(message);
+      } else if (err instanceof Error) {
+        toast.error(err.message);
+      }
+    }
   }
 
   return (
@@ -117,7 +144,7 @@ export default function Register() {
               control={form.control}
               id="password"
               type="password"
-              label="password"
+              label="Password"
               name="password"
             />
             <FormField

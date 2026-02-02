@@ -18,13 +18,13 @@ class ValidateCnpj implements ValidationRule
 
         // Validate length
         if (strlen($cnpj) != 14) {
-            $fail('The :attribute must be 14 digits.');
+            $fail($attribute, 'The :attribute must be 14 digits.');
             return;
         }
 
         // Verify if all the digits are the same
         if (preg_match('/(\d)\1{13}/', $cnpj)) {
-            $fail('The :attribute must not be all the same.');
+            $fail($attribute, 'The :attribute must not be all the same.');
             return;
         }
 
@@ -37,7 +37,7 @@ class ValidateCnpj implements ValidationRule
         $rest = $sum % 11;
 
         if ($cnpj[12] != ($rest < 2 ? 0 : 11 - $rest)) {
-            $fail('The :attribute is invalid.');
+            $fail($attribute, 'The :attribute is invalid.');
             return;
         }
 
@@ -50,7 +50,7 @@ class ValidateCnpj implements ValidationRule
         $rest = $sum % 11;
 
         if ($cnpj[13] != ($rest < 2 ? 0 : 11 - $rest)) {
-            $fail('The :attribute is invalid.');
+            $fail($attribute, 'The :attribute is invalid.');
             return;
         }
     }
