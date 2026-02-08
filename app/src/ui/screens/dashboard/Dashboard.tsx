@@ -1,9 +1,9 @@
 import Layout from "@/ui/components/layout/Layout";
 
 export default function Dashboard() {
-    return (
-        <Layout>
-            <h1>Dashboard</h1>
-        </Layout>
-    )
+  return (
+    <Layout>
+      <h1>Dashboard</h1>
+    </Layout>
+  );
 }

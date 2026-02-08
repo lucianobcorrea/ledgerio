@@ -11,26 +11,24 @@ use App\Models\Company;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
 class AuthenticationController extends Controller
 {
     public function login(LoginRequest $request)
     {
         $request->validated();
-        $data = $request->input();
-        $user = User::where('email', $data['email'])->first();
+        $credentials = $request->only('email', 'password');
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Invalid credentials'
+                'message' => 'Login successful!',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Invalid login credentials!',
             ], 401);
         }
-
-        $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
-        return response()->json([
-            'auth_token' => $token,
-        ], 200);
     }
 
     public function register(RegisterRequest $request)
@@ -64,10 +62,11 @@ class AuthenticationController extends Controller
         ], 201);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        $user = Auth::user();
-        $user->tokens()->delete();
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return response()->noContent();
     }
 }
