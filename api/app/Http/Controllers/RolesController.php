@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\auth;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +10,6 @@ class RolesController extends Controller
     public function roles()
     {
         $roles = Auth::user()->getRoleNames();
-        return $roles;
+        return response()->json($roles);
     }
 }
