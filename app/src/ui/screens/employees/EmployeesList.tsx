@@ -20,7 +20,7 @@ export default function EmployeesList() {
     <Loading />
   ) : (
     <Layout>
-      <DataGrid
+      <DataGrid``
         rows={employees.data}
         columns={columns}
         rowCount={employees.total}
