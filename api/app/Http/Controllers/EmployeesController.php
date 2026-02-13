@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\EmployeeCreationException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateEmployeeRequest;
 use App\Models\User;
 
 class EmployeesController extends Controller
@@ -21,7 +23,25 @@ class EmployeesController extends Controller
         $perPage = request('per_page', 10);
         $employees = User::
             where('company_id', $companyId)
+            ->where('id', '!=', $user->id)
             ->paginate($perPage);
         return response()->json($employees);
+    }
+
+    public function store(CreateEmployeeRequest $request) {
+        $request->validated();
+        $data = $request->input();
+        $data['company_id'] = auth()->user()->company->id;
+        $user = User::create($data);
+
+        if (!$user) {
+            throw new EmployeeCreationException();
+        }
+
+        $user->assignRole('employee');
+
+        return response()->json([
+            'message' => 'User created successfully'
+        ], 201);
     }
 }

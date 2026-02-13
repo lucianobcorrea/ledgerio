@@ -9,10 +9,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { Users, LayoutDashboard } from "lucide-react";
 import { Link } from "react-router";
 
 export function AppSidebar() {
+  const { roles } = useAuthStore();
+
   const items = [
     {
       content: [
@@ -22,6 +25,7 @@ export function AppSidebar() {
           icon: LayoutDashboard,
         },
       ],
+      role: ["company", "employee"],
       label: "Dashboard",
     },
     {
@@ -32,6 +36,7 @@ export function AppSidebar() {
           icon: Users,
         },
       ],
+      role: ["company"],
       label: "Employees",
     },
   ];
@@ -42,21 +47,25 @@ export function AppSidebar() {
       <div className="overflow-auto">
         {items.map((item, index) => (
           <SidebarContent className="flex-initial overflow-hidden" key={index}>
-            <SidebarGroupLabel>{item.label}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {item.content.map((content) => (
-                  <SidebarMenuItem key={content.title}>
-                    <SidebarMenuButton asChild>
-                      <Link to={content.url}>
-                        <content.icon />
-                        <span>{content.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
+            {item.role.some((role) => roles.includes(role)) && (
+              <>
+                <SidebarGroupLabel>{item.label}</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {item.content.map((content) => (
+                      <SidebarMenuItem key={content.title}>
+                        <SidebarMenuButton asChild>
+                          <Link to={content.url}>
+                            <content.icon />
+                            <span>{content.title}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </>
+            )}
           </SidebarContent>
         ))}
       </div>

@@ -1,7 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
 import { Link, useNavigate } from "react-router";
-
+import Button from "@/ui/components/button/Button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

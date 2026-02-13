@@ -6,8 +6,9 @@ import Loading from "@/ui/components/loading/Loading";
 import Layout from "@/ui/components/layout/Layout";
 import { useState } from "react";
 import CustomToolbar from "@/ui/components/customToolbar/CustomToolbar";
+import LinkButton from "@/ui/components/linkButton/LinkButton";
 
-export default function EmployeesList() {
+export default function ListEmployees() {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
@@ -15,12 +16,16 @@ export default function EmployeesList() {
     queryKey: ["employees", page, pageSize],
     queryFn: () => list({ page: page + 1, perPage: pageSize }),
   });
-  console.log(employees);
+
   return isLoading ? (
     <Loading />
   ) : (
     <Layout>
-      <DataGrid``
+      <div className="flex justify-between mb-5 items-center">
+        <h1 className="font-bold">Employees</h1>
+        <LinkButton route="/employees/create">Create</LinkButton>
+      </div>
+      <DataGrid
         rows={employees.data}
         columns={columns}
         rowCount={employees.total}

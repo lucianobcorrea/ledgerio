@@ -1,6 +1,6 @@
 import { login } from "@/api/auth/login";
 import { getXsrfToken } from "@/api/auth/xsrfToken";
-import { Button } from "@/components/ui/button";
+import Button from "@/ui/components/button/Button";
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
 import CardForm from "@/ui/components/cardForm/CardForm";
 import FormField from "@/ui/components/formField/FormField";
