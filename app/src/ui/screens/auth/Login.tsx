@@ -1,11 +1,11 @@
 import { login } from "@/api/auth/login";
 import { getXsrfToken } from "@/api/auth/xsrfToken";
-import Button from "@/ui/components/button/Button";
+import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
 import CardForm from "@/ui/components/cardForm/CardForm";
 import FormField from "@/ui/components/formField/FormField";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -19,6 +19,7 @@ const formSchema = z.object({
 
 export default function Login() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -30,6 +31,9 @@ export default function Login() {
 
   const loginUser = useMutation({
     mutationFn: login,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userRoles"] });
+    },
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
@@ -72,7 +76,9 @@ export default function Login() {
               name="password"
             />
             <Field>
-              <Button type="submit">Login</Button>
+              <Button variant={"defaultPanel"} type="submit">
+                Login
+              </Button>
               <FieldDescription className="text-center">
                 Don&apos;t have an account? <Link to="/register">Sign up</Link>
               </FieldDescription>

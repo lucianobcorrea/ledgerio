@@ -1,7 +1,8 @@
 import { create } from "@/api/employee/create";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field, FieldGroup } from "@/components/ui/field";
-import Button from "@/ui/components/button/Button";
+import BackTitle from "@/ui/components/backTitle/BackTitle";
 import FormField from "@/ui/components/formField/FormField";
 import Layout from "@/ui/components/layout/Layout";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -64,8 +65,8 @@ export default function CreateEmployee() {
 
   return (
     <Layout>
-      <h1 className="font-bold mb-3">Create Employee</h1>
-      <Card>
+      <BackTitle title="Create Employee" />
+      <Card className="mt-5">
         <CardContent>
           <form id="formRegister" onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
@@ -104,8 +105,12 @@ export default function CreateEmployee() {
                 />
               </div>
               <Field className="w-fit">
-                <Button type="submit" form="formRegister">
-                  Create Account
+                <Button
+                  type="submit"
+                  form="formRegister"
+                  variant={"defaultPanel"}
+                >
+                  Create employee
                 </Button>
               </Field>
             </FieldGroup>

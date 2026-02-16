@@ -7,6 +7,7 @@ import Layout from "@/ui/components/layout/Layout";
 import { useState } from "react";
 import CustomToolbar from "@/ui/components/customToolbar/CustomToolbar";
 import LinkButton from "@/ui/components/linkButton/LinkButton";
+import BackTitle from "@/ui/components/backTitle/BackTitle";
 
 export default function ListEmployees() {
   const [page, setPage] = useState(0);
@@ -22,7 +23,7 @@ export default function ListEmployees() {
   ) : (
     <Layout>
       <div className="flex justify-between mb-5 items-center">
-        <h1 className="font-bold">Employees</h1>
+        <BackTitle title="Employees" />
         <LinkButton route="/employees/create">Create</LinkButton>
       </div>
       <DataGrid

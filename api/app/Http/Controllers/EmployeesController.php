@@ -28,7 +28,8 @@ class EmployeesController extends Controller
         return response()->json($employees);
     }
 
-    public function store(CreateEmployeeRequest $request) {
+    public function store(CreateEmployeeRequest $request)
+    {
         $request->validated();
         $data = $request->input();
         $data['company_id'] = auth()->user()->company->id;
@@ -43,5 +44,13 @@ class EmployeesController extends Controller
         return response()->json([
             'message' => 'User created successfully'
         ], 201);
+    }
+
+    public function delete(User $employee)
+    {
+        $employee->delete();
+        return response()->json([
+            'message' => 'Employee deleted successfully'
+        ], 200);
     }
 }

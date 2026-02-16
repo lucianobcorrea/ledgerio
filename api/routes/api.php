@@ -16,5 +16,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::middleware(ValidateRole::class)->group(function () {
         Route::get('employees', [EmployeesController::class, 'index']);
         Route::post('employees', [EmployeesController::class, 'store']);
+        Route::delete('employees/{employee}', [EmployeesController::class, 'delete']);
     });
 });

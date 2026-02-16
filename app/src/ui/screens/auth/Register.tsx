@@ -1,6 +1,5 @@
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
 import { Link, useNavigate } from "react-router";
-import Button from "@/ui/components/button/Button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -11,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { register } from "@/api/auth/register";
 import axios from "axios";
 import { formatCnpj } from "@/utils/formatters/cnpj";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z
   .object({
@@ -142,7 +142,7 @@ export default function Register() {
               name="password_confirmation"
             />
             <Field>
-              <Button type="submit" form="formRegister">
+              <Button variant="defaultPanel" type="submit" form="formRegister">
                 Create Account
               </Button>
               <FieldDescription className="text-center">
