@@ -3,6 +3,7 @@ import Register from "@/ui/screens/auth/Register";
 import Dashboard from "@/ui/screens/dashboard/Dashboard";
 import CreateEmployee from "@/ui/screens/employees/CreateEmployee";
 import ListEmployees from "@/ui/screens/employees/ListEmployees";
+import ListExpenses from "@/ui/screens/expenses/ListExpenses";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
@@ -28,7 +29,16 @@ export const router = createBrowserRouter([
       {
         path: "create",
         element: <CreateEmployee />,
-      }
-    ]
+      },
+    ],
+  },
+  {
+    path: "/expenses",
+    children: [
+      {
+        index: true,
+        element: <ListExpenses />,
+      },
+    ],
   },
 ]);
